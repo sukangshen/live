@@ -1,6 +1,25 @@
 <template>
   <div class="Tables">
-
+　<div>
+                    <input type="text" v-model="class_me" placeholder="点击搜索按钮筛选" />
+                    <input type="button" @click="search" value="搜索" />
+                </div>
+                　<table>
+                        <tbody>
+                            <tr v-for="item in listt0">
+                                <td>
+                                    <a v-text="item.sort"></a>
+                                </td>
+                                <td>
+                                    <a v-text="item.City"></a>
+                                </td>
+                                <td>
+                                    <a :style="{'color':item.sort<=10?'#f2972e':''}" v-cloak>{{item.Data | two}}</a>
+                                </td>
+                                <td><span v-text="item.Good"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
 <div class="main-content">
 					<div class="breadcrumbs" id="breadcrumbs">
@@ -135,25 +154,23 @@
 
 								<div class="hr hr-18 dotted hr-double"></div>
 
-								<h4 class="pink">
-									<i class="icon-hand-right icon-animated-hand-pointer blue"></i>
-									<a href="#modal-table" role="button" class="green" data-toggle="modal"> Table Inside a Modal Box </a>
-								</h4>
-
-								<div class="hr hr-18 dotted hr-double"></div>
-
-								<div class="row">
-									<div class="col-xs-12">
-										<h3 class="header smaller lighter blue">jQuery dataTables</h3>
-										<div class="table-header">
-											Results for "Latest Registered Domains"
-										</div>
-
-										</div>
-									</div>
-								</div>
+								
 
 								
+
+								<ul class="pagination">
+<li><a href="javascript:;">&laquo;</a><>
+<li><a href="javascript:;" @click="page(1)">首页</a></li>
+<li><a href="javascript:;" @click="page(prev)">上一页</a></li>
+<li><a href="javascript:;" @click="page(next)">下一页</a></li>
+<li><a href="javascript:;" @click="page(end)">尾页</a></li>
+	<li><a href="#">&raquo;</a></li>
+</ul>
+
+
+
+
+
 								</div><!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -171,18 +188,28 @@
 
 
 export default {
-  data() {
+   data() {
     return {
       arr: [],
-      data:[],
+      sear:'',
+      prev:1,
+      next:2,
+      end:'',
     }
   },
- mounted:function() { 
-	this.$http.jsonp('http://www.boss.com/zhibo/admin/yii2/advanced/frontend/web/?r=index/sel', {},{ 
+
+
+
+ mounted:function(page) { 
+	this.$http.jsonp('http://www.boss.com/zhibo/admin/yii2/advanced/frontend/web/?r=index/sel', {params:{page:page}},{ 
 		headers: { }, emulateJSON: true }).then(function(response)
 { // 这里是处理正确的回调 
-	
-	this.arr = response.data  
+	console.log(response)
+		this.arr=response.body.arr
+		this.prev=response.body.prev
+		this.next=response.body.next
+		this.end=response.body.end
+	 
 //	this.articles = response.data["subjects"] //也可以 
 	}, function(response) 
 	{ // 这里是处理错误的回调 
@@ -196,6 +223,7 @@ export default {
 
 //删除的方法
 methods:{
+
 	del:function(data)
 	{
      
@@ -212,8 +240,34 @@ methods:{
 
 
 
-	}
+	},
+//分页的方法
+	 page:function(page) { 
+	this.$http.jsonp('http://www.boss.com/zhibo/admin/yii2/advanced/frontend/web/?r=index/sel', {params:{page:page}},{ 
+		headers: { }, emulateJSON: true }).then(function(response)
+{ // 这里是处理正确的回调 
+	console.log(response)
+		this.arr=response.body.arr
+		this.prev=response.body.prev
+		this.next=response.body.next
+		this.end=response.body.end
+	 
+//	this.articles = response.data["subjects"] //也可以 
+	}, function(response) 
+	{ // 这里是处理错误的回调 
+		console.log(response) 
+	}); 
+},
+
 }
+
+
+
+
+
+
+
+
 
 
 }
