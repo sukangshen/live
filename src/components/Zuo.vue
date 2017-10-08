@@ -152,12 +152,12 @@
 									</a>
 								</li>
 
-								<li>
+								<!-- <li>
 									<a href="http://localhost:8080/index.html#/Formwizard">
 										<i class="icon-double-angle-right"></i>
 										添加管理
 									</a>
-								</li>
+								</li> -->
 							</ul>
 						</li>
 
